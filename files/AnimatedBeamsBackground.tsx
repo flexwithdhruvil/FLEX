@@ -1,19 +1,10 @@
-/**
- * AnimatedBeamsBackground — Optimised
- *
- * Key changes from the original:
- * 1. ctx.filter REMOVED from animation loop — GPU blur via CSS instead
- * 2. IntersectionObserver pauses animation when off-screen
- * 3. Mouse attraction pulls beams gently toward cursor
- * 4. Respects prefers-reduced-motion
- * 5. 120Hz-safe: speed driven by elapsed ms, not frame count
- */
+
 import { useEffect, useRef } from 'react';
 
 const BEAM_COUNT   = 28;
 const MIN_WIDTH    = 28;
 const MAX_WIDTH    = 85;
-const BASE_SPEED   = 70;   // px per second (frame-rate independent)
+const BASE_SPEED   = 70;
 const MIN_OPACITY  = 0.12;
 const MAX_OPACITY  = 0.30;
 const MIN_HUE      = 35;
@@ -21,7 +12,7 @@ const MAX_HUE      = 55;
 const ANGLE_MIN    = -35;
 const ANGLE_MAX    = -25;
 const RESET_OFFSET = 100;
-const ATTRACT_STRENGTH = 0.018; // mouse pull (0 = off, 0.05 = strong)
+const ATTRACT_STRENGTH = 0.018;
 
 interface Beam {
   x: number;
@@ -29,11 +20,11 @@ interface Beam {
   width: number;
   length: number;
   angle: number;
-  speedFactor: number;   // multiplier on BASE_SPEED
+  speedFactor: number;
   opacity: number;
   hue: number;
   pulse: number;
-  pulseSpeed: number;    // radians per second
+  pulseSpeed: number;
 }
 
 export default function AnimatedBeamsBackground() {
@@ -47,7 +38,7 @@ export default function AnimatedBeamsBackground() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // ── Reduced-motion: draw one static frame and bail ────────────────────────
+
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const dpr = window.devicePixelRatio || 1;
       canvas.width  = window.innerWidth  * dpr;
@@ -64,7 +55,7 @@ export default function AnimatedBeamsBackground() {
     let rafId: number;
     let lastTime = performance.now();
 
-    // ── Canvas sizing ─────────────────────────────────────────────────────────
+
     const resize = () => {
       const dpr = window.devicePixelRatio || 1;
       canvas.width  = window.innerWidth  * dpr;
@@ -75,11 +66,11 @@ export default function AnimatedBeamsBackground() {
       beams = Array.from({ length: BEAM_COUNT }, (_, i) => generateBeam(i, true));
     };
 
-    // ── Animation loop ────────────────────────────────────────────────────────
+
     const tick = (now: number) => {
       if (!runningRef.current) { rafId = requestAnimationFrame(tick); return; }
 
-      const dt = Math.min((now - lastTime) / 1000, 0.05); // seconds, capped at 50ms
+      const dt = Math.min((now - lastTime) / 1000, 0.05);
       lastTime = now;
 
       const W = window.innerWidth;
@@ -89,20 +80,20 @@ export default function AnimatedBeamsBackground() {
       ctx.clearRect(0, 0, W, H);
 
       beams.forEach((beam, idx) => {
-        // ── Mouse attraction ─────────────────────────────────────────────────
+
         const dx = mx - beam.x;
         beam.x  += dx * ATTRACT_STRENGTH * dt * 60;
 
-        // ── Move ─────────────────────────────────────────────────────────────
+
         beam.y    -= BASE_SPEED * beam.speedFactor * dt;
         beam.pulse += beam.pulseSpeed * dt;
 
-        // ── Reset when fully above viewport ──────────────────────────────────
+
         if (beam.y + beam.length * Math.cos(Math.abs(beam.angle)) < -RESET_OFFSET) {
           Object.assign(beam, generateBeam(idx, false));
         }
 
-        // ── Draw ─────────────────────────────────────────────────────────────
+
         const pulsing = beam.opacity * (0.8 + Math.sin(beam.pulse) * 0.2);
         ctx.save();
         ctx.translate(beam.x, beam.y);
@@ -125,14 +116,14 @@ export default function AnimatedBeamsBackground() {
       rafId = requestAnimationFrame(tick);
     };
 
-    // ── IntersectionObserver: pause when off-screen ───────────────────────────
+
     const observer = new IntersectionObserver(
       ([entry]) => { runningRef.current = entry.isIntersecting; },
       { threshold: 0 }
     );
     observer.observe(canvas);
 
-    // ── Mouse tracking ────────────────────────────────────────────────────────
+
     const onMouse = (e: MouseEvent) => {
       mouseRef.current = { x: e.clientX, y: e.clientY };
     };
@@ -154,13 +145,13 @@ export default function AnimatedBeamsBackground() {
     <canvas
       ref={canvasRef}
       className="absolute inset-0 w-full h-full pointer-events-none"
-      // ↓ GPU compositor blur — one pass, not per-frame CPU blur
+
       style={{ filter: 'blur(28px)', background: '#0a0a0a' }}
     />
   );
 }
 
-// ─── Helpers ───────────────────────────────────────────────────────────────────
+
 function generateBeam(index: number, initial: boolean): Beam {
   const W = window.innerWidth;
   const H = window.innerHeight;
@@ -181,7 +172,7 @@ function generateBeam(index: number, initial: boolean): Beam {
     opacity:     MIN_OPACITY + Math.random() * (MAX_OPACITY - MIN_OPACITY),
     hue,
     pulse:       Math.random() * Math.PI * 2,
-    pulseSpeed:  0.8 + Math.random() * 1.2,  // rad/s
+    pulseSpeed:  0.8 + Math.random() * 1.2,
   };
 }
 

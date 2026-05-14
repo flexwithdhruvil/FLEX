@@ -17,12 +17,12 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
 
-  // Motion values for physics-based animation
+
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // Premium spring physics with inertia for realistic motion
-  // Lower stiffness + higher damping = more weight/inertia feel
+
+
   const mouseXSpring = useSpring(x, { 
     stiffness: 200, 
     damping: 30, 
@@ -36,18 +36,18 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
     restDelta: 0.001 
   });
 
-  // Dramatic rotation for premium feel
+
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["25deg", "-25deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-25deg", "25deg"]);
 
-  // Subtle scale for depth perception
+
   const scale = useTransform(mouseXSpring, [-0.5, 0.5], [1, 1.08]);
 
-  // Dynamic lighting angle based on mouse position
+
   const lightX = useTransform(mouseXSpring, [-0.5, 0.5], [0, 100]);
   const lightY = useTransform(mouseYSpring, [-0.5, 0.5], [0, 100]);
 
-  // Parallax depth values for different layers - cutout prominently out of background
+
   const backgroundZ = useTransform(mouseYSpring, [-0.5, 0.5], [-40, -20]);
   const midZ = useTransform(mouseYSpring, [-0.5, 0.5], [80, 140]);
   const foregroundZ = useTransform(mouseYSpring, [-0.5, 0.5], [140, 200]);
@@ -60,7 +60,7 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
     
-    // Normalize mouse position (-0.5 to 0.5)
+
     const normalizedX = (mouseX / width) - 0.5;
     const normalizedY = (mouseY / height) - 0.5;
     
@@ -110,7 +110,7 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
       }}
       className="relative group rounded-[2.5rem] w-full aspect-square cursor-pointer"
     >
-      {/* Premium Card Container */}
+      {}
       <div
         className="w-full h-full rounded-[2.5rem] absolute inset-0"
         style={{ 
@@ -125,7 +125,7 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
           `
         }}
       >
-        {/* Dynamic Volumetric Lighting - Follows Cursor */}
+        {}
         <motion.div
           className="absolute inset-0 rounded-[2.5rem] pointer-events-none"
           style={{
@@ -143,7 +143,7 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
           }}
         />
 
-        {/* Chromatic Aberration Effect on Hover */}
+        {}
         <motion.div
           className="absolute inset-0 rounded-[2.5rem] pointer-events-none mix-blend-screen opacity-0"
           animate={{
@@ -156,25 +156,25 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
           }}
         />
 
-        {/* Cinematic Gradient Overlays */}
+        {}
         <div className="absolute inset-0 rounded-[2.5rem] pointer-events-none z-10">
-          {/* Top vignette */}
+          {}
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-transparent" 
                style={{ opacity: isHovered ? 0.3 : 0.6, transition: "opacity 0.5s" }} />
           
-          {/* Bottom gradient */}
+          {}
           <motion.div 
             className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"
             animate={{ opacity: isHovered ? 0.7 : 0.9 }}
             transition={{ duration: 0.5 }}
           />
           
-          {/* Corner accents */}
+          {}
           <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-white/5 to-transparent rounded-tl-[2.5rem]" />
           <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-white/5 to-transparent rounded-br-[2.5rem]" />
         </div>
 
-        {/* LAYER 1: Background Image - Deepest Parallax */}
+        {}
         <motion.div
           className="w-full h-full absolute inset-0 rounded-[2.5rem] overflow-hidden"
           style={{ 
@@ -196,7 +196,7 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
           />
         </motion.div>
 
-        {/* LAYER 2: Cutout Image - Mid Parallax */}
+        {}
         <motion.div
           className="w-full h-full absolute inset-0 opacity-0 pointer-events-none z-20"
           style={{ 
@@ -221,7 +221,7 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
           />
         </motion.div>
 
-        {/* Floating Particles */}
+        {}
         <motion.div
           className="absolute inset-0 pointer-events-none"
           style={{ transform: "translateZ(30px)", zIndex: 25 }}
@@ -252,7 +252,7 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
           ))}
         </motion.div>
 
-        {/* LAYER 3: Content - Front Parallax */}
+        {}
         <motion.div
           className="absolute bottom-0 left-0 p-8 z-30 w-full"
           style={{ 
@@ -266,7 +266,7 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
         >
           <div className="flex justify-between items-end">
             <div>
-              {/* Premium Badge */}
+              {}
               <motion.div 
                 className="flex gap-2 mb-4"
                 animate={{ x: isHovered ? 5 : 0 }}
@@ -286,7 +286,7 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
                 </motion.span>
               </motion.div>
               
-              {/* Title with glow effect */}
+              {}
               <motion.p 
                 className="text-white font-headline font-bold text-2xl sm:text-3xl"
                 style={{
@@ -301,7 +301,7 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
               </motion.p>
             </div>
 
-            {/* Floating Premium Icon */}
+            {}
             <motion.div
               className="w-14 h-14 rounded-2xl bg-gradient-to-br from-white/15 via-white/5 to-transparent border border-white/20 flex items-center justify-center backdrop-blur-sm"
               style={{ transform: "translateZ(50px)" }}
@@ -325,7 +325,7 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
           </div>
         </motion.div>
 
-        {/* Premium Glowing Border */}
+        {}
         <motion.div
           className="absolute inset-0 rounded-[2.5rem] pointer-events-none"
           animate={{
@@ -338,7 +338,7 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
           style={{ zIndex: 40 }}
         />
 
-        {/* Light Sweep Effect */}
+        {}
         <motion.div
           className="absolute inset-0 rounded-[2.5rem] pointer-events-none overflow-hidden"
           style={{ zIndex: 35 }}
@@ -360,7 +360,7 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
           />
         </motion.div>
 
-        {/* Dynamic Ambient Shadow */}
+        {}
         <motion.div
           className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-3/4 h-5 rounded-full pointer-events-none"
           style={{ 

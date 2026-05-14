@@ -1,13 +1,4 @@
-/**
- * AuthContext — wraps the whole app in src/main.tsx
- *
- * Usage:
- *   import { useAuth } from '../context/AuthContext';
- *   const { session, user, isAuthenticated, signOut } = useAuth();
- *
- * In main.tsx wrap <App /> with <AuthProvider>:
- *   root.render(<AuthProvider><App /></AuthProvider>)
- */
+
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import type { Session, User } from '@supabase/supabase-js';
 import { supabase } from '../utils/supabase';
@@ -33,13 +24,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Hydrate from existing Supabase session on mount
+
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
       setIsLoading(false);
     });
 
-    // Keep state in sync with Supabase auth events
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {
       setSession(newSession);
     });

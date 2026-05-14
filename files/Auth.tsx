@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Eye, EyeOff, AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
 import { supabase } from '../utils/supabase';
 
-// ─── Toast ────────────────────────────────────────────────────────────────────
+
 function Toast({ message, type }: { message: string; type: 'success' | 'error' }) {
   return (
     <motion.div
@@ -25,24 +25,24 @@ function Toast({ message, type }: { message: string; type: 'success' | 'error' }
   );
 }
 
-// ─── Scanning border animation on focus ────────────────────────────────────────
-// Applied via CSS class on the input wrapper — a thin gold line sweeps left→right on focus.
-// Add this to your index.css:
-//
-//   @keyframes scanLine {
-//     from { transform: translateX(-100%); }
-//     to   { transform: translateX(100%); }
-//   }
-//   .input-focused-scan::after {
-//     content: '';
-//     position: absolute;
-//     bottom: 0; left: 0;
-//     width: 100%; height: 1px;
-//     background: linear-gradient(90deg, transparent, #facc15, transparent);
-//     animation: scanLine 0.6s ease forwards;
-//   }
 
-// ─── Icon wrappers ─────────────────────────────────────────────────────────────
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const GoogleIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -58,7 +58,7 @@ const GitHubIcon = () => (
   </svg>
 );
 
-// ─── Main component ────────────────────────────────────────────────────────────
+
 export default function Auth() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'signin' | 'signup'>('signin');
@@ -66,12 +66,12 @@ export default function Auth() {
   const [isLoading, setIsLoading] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
-  // Form fields
+
   const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
 
-  // Focused field for scan animation
+
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
   const showToast = (message: string, type: 'success' | 'error') => {
@@ -113,7 +113,7 @@ export default function Auth() {
       email,
       password,
       options: {
-        data: { username },           // stored in auth.users.raw_user_meta_data
+        data: { username },
         emailRedirectTo: `${window.location.origin}/`,
       },
     });
@@ -141,7 +141,7 @@ export default function Auth() {
     });
   };
 
-  // ── Input wrapper with scanning border animation ─────────────────────────────
+
   const Field = ({
     id, label, type, value, onChange, placeholder, right,
   }: {
@@ -171,7 +171,7 @@ export default function Auth() {
         {right && (
           <div className="absolute right-3 top-1/2 -translate-y-1/2">{right}</div>
         )}
-        {/* scanning gold line on focus */}
+        {}
         {focusedField === id && (
           <motion.div
             initial={{ x: '-100%' }}
@@ -184,7 +184,7 @@ export default function Auth() {
     </div>
   );
 
-  // ── Submit button ────────────────────────────────────────────────────────────
+
   const SubmitBtn = ({ label }: { label: string }) => (
     <button
       type="submit"
@@ -203,12 +203,12 @@ export default function Auth() {
       <div className="orb orb-1" />
       <div className="orb orb-2" />
 
-      {/* Toast */}
+      {}
       <AnimatePresence>
         {toast && <Toast key="toast" message={toast.message} type={toast.type} />}
       </AnimatePresence>
 
-      {/* Back link */}
+      {}
       <motion.div
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
@@ -225,7 +225,7 @@ export default function Auth() {
         </Link>
       </motion.div>
 
-      {/* Logo */}
+      {}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -237,7 +237,7 @@ export default function Auth() {
         <h1 className="text-2xl font-syne tracking-tighter text-white">FlexProtocol</h1>
       </motion.div>
 
-      {/* Card */}
+      {}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -246,7 +246,7 @@ export default function Auth() {
         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-indigo-accent/50 to-transparent" />
 
         <div className="p-8">
-          {/* Tab switcher */}
+          {}
           <div className="relative flex p-1 bg-navy-bg/50 rounded-2xl mb-8 border border-white/5">
             <motion.div
               className="absolute top-1 bottom-1 left-1 bg-indigo-accent/20 border border-indigo-accent/30 rounded-xl z-0"
@@ -282,7 +282,7 @@ export default function Auth() {
                   <p className="text-white/50 text-sm">Enter your credentials to continue</p>
                 </div>
 
-                {/* Social buttons */}
+                {}
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     type="button"
@@ -396,7 +396,7 @@ export default function Auth() {
                       </button>
                     }
                   />
-                  {/* Password strength bar */}
+                  {}
                   {password.length > 0 && (
                     <div className="space-y-1">
                       <div className="flex gap-1">

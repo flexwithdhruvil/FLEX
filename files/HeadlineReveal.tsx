@@ -1,22 +1,8 @@
-/**
- * HeadlineReveal
- *
- * Replaces the static <h1> in the hero with a two-phase animation:
- *   Phase 1 (0–1.2s): scanner line sweeps left→right revealing the text
- *   Phase 2 (1.2–2.0s): neon gold glow blooms, then settles
- *
- * Drop-in usage — replace the hero <h1> block in Home.tsx:
- *
- *   import HeadlineReveal from '../components/HeadlineReveal';
- *   // ...
- *   <HeadlineReveal />
- *
- * The component matches the exact typography of the original h1.
- */
+
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 
-// ── CSS injected once ──────────────────────────────────────────────────────────
+
 const STYLES = `
 @keyframes fp-scan {
   0%   { clip-path: inset(0 100% 0 0); }
@@ -74,7 +60,7 @@ export default function HeadlineReveal() {
   const line1Ref = useRef<HTMLSpanElement>(null);
   const line2Ref = useRef<HTMLSpanElement>(null);
 
-  // Inject CSS once globally
+
   useEffect(() => {
     if (!stylesInjected) {
       const tag = document.createElement('style');
@@ -82,7 +68,7 @@ export default function HeadlineReveal() {
       document.head.appendChild(tag);
       stylesInjected = true;
     }
-    // Small delay so the initial clip-path renders before animation fires
+
     const t = setTimeout(() => setMounted(true), 60);
     return () => clearTimeout(t);
   }, []);
@@ -92,7 +78,7 @@ export default function HeadlineReveal() {
 
   return (
     <div className={`${baseClass} mb-4 sm:mb-6 relative`}>
-      {/* ── Line 1: "The 69 Days" ── */}
+      {}
       <div className="relative inline-block">
         <span
           ref={line1Ref}
@@ -100,7 +86,7 @@ export default function HeadlineReveal() {
         >
           The 69 Days
         </span>
-        {/* Scanner cursor line */}
+        {}
         {mounted && (
           <span
             className="fp-scan-cursor"
@@ -111,7 +97,7 @@ export default function HeadlineReveal() {
 
       <br />
 
-      {/* ── Line 2: "Flex Protocol" ── */}
+      {}
       <div className="relative inline-block">
         <span
           ref={line2Ref}
@@ -131,37 +117,4 @@ export default function HeadlineReveal() {
 }
 
 
-/**
- * ─────────────────────────────────────────────────────────────────────────────
- * HOW TO INTEGRATE IN Home.tsx
- * ─────────────────────────────────────────────────────────────────────────────
- *
- * 1. Import at the top:
- *      import HeadlineReveal from '../components/HeadlineReveal';
- *
- * 2. Replace this block in the hero section:
- *
- *    // REMOVE:
- *    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
- *      transition={{ delay: 0.1 }} className="max-w-4xl mb-8 sm:mb-12">
- *      <h1 className="text-4xl sm:text-6xl md:text-8xl font-headline font-black ...">
- *        <motion.span ...>The 69 Days</motion.span> <br />
- *        <motion.span ...>Flex Protocol</motion.span>
- *      </h1>
- *      <motion.p ...>...</motion.p>
- *    </motion.div>
- *
- *    // ADD:
- *    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
- *      transition={{ delay: 0.1 }} className="max-w-4xl mb-8 sm:mb-12">
- *      <HeadlineReveal />
- *      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
- *        transition={{ delay: 1.6, duration: 0.8 }}
- *        className="text-[10px] sm:text-sm md:text-base font-headline font-bold uppercase tracking-[0.2em] text-gray-400">
- *        The Only Fitness Cohort That Actually Forces You to Grow.
- *      </motion.p>
- *    </motion.div>
- *
- *    Note: subtitle delay increased to 1.6s so it fades in after the scan completes.
- * ─────────────────────────────────────────────────────────────────────────────
- */
+

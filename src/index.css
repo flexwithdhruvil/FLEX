@@ -161,7 +161,7 @@ h1, h2, h3, h4, .font-headline {
   font-family: var(--font-headline);
 }
 
-/* ── Auth page: scanning-border animation ──────────────────────────────────── */
+
 @keyframes scanLine {
   from { transform: translateX(-100%); }
   to   { transform: translateX(100%); }
@@ -176,7 +176,7 @@ h1, h2, h3, h4, .font-headline {
   animation: scanLine 0.6s ease forwards;
 }
 
-/* ── WhatsApp Button ───────────────────────────────────── */
+
 .whatsapp-btn {
   position: fixed;
   bottom: 30px;
