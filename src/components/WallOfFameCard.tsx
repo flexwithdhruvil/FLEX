@@ -1,0 +1,382 @@
+import React, { useRef, useState, useEffect } from 'react';
+import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from 'motion/react';
+
+interface WallOfFameCardProps {
+  key?: React.Key;
+  hero: {
+    id: number;
+    image: string;
+    cutoutImage?: string;
+    label: string;
+  };
+  index: number;
+}
+
+export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
+
+  // Motion values for physics-based animation
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  // Premium spring physics with inertia for realistic motion
+  // Lower stiffness + higher damping = more weight/inertia feel
+  const mouseXSpring = useSpring(x, { 
+    stiffness: 200, 
+    damping: 30, 
+    mass: 0.8,
+    restDelta: 0.001 
+  });
+  const mouseYSpring = useSpring(y, { 
+    stiffness: 200, 
+    damping: 30, 
+    mass: 0.8,
+    restDelta: 0.001 
+  });
+
+  // Dramatic rotation for premium feel
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["25deg", "-25deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-25deg", "25deg"]);
+
+  // Subtle scale for depth perception
+  const scale = useTransform(mouseXSpring, [-0.5, 0.5], [1, 1.08]);
+
+  // Dynamic lighting angle based on mouse position
+  const lightX = useTransform(mouseXSpring, [-0.5, 0.5], [0, 100]);
+  const lightY = useTransform(mouseYSpring, [-0.5, 0.5], [0, 100]);
+
+  // Parallax depth values for different layers - cutout prominently out of background
+  const backgroundZ = useTransform(mouseYSpring, [-0.5, 0.5], [-40, -20]);
+  const midZ = useTransform(mouseYSpring, [-0.5, 0.5], [80, 140]);
+  const foregroundZ = useTransform(mouseYSpring, [-0.5, 0.5], [140, 200]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    
+    // Normalize mouse position (-0.5 to 0.5)
+    const normalizedX = (mouseX / width) - 0.5;
+    const normalizedY = (mouseY / height) - 0.5;
+    
+    setMousePosition({
+      x: (mouseX / width) * 100,
+      y: (mouseY / height) * 100
+    });
+    
+    x.set(normalizedX);
+    y.set(normalizedY);
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    x.set(0);
+    y.set(0);
+    setMousePosition({ x: 50, y: 50 });
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      initial={{ opacity: 0, y: 80, scale: 0.9 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, margin: "-150px" }}
+      transition={{ 
+        delay: index * 0.15,
+        type: "spring",
+        stiffness: 80,
+        damping: 20,
+        mass: 1
+      }}
+      style={{
+        rotateX,
+        rotateY,
+        scale,
+        transformStyle: "preserve-3d",
+        perspective: 2000,
+        willChange: "transform"
+      }}
+      className="relative group rounded-[2.5rem] w-full aspect-square cursor-pointer"
+    >
+      {/* Premium Card Container */}
+      <div
+        className="w-full h-full rounded-[2.5rem] absolute inset-0"
+        style={{ 
+          transformStyle: "preserve-3d",
+          background: "linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          border: "1px solid rgba(255,255,255,0.08)",
+          boxShadow: `
+            0 25px 50px rgba(0,0,0,0.4),
+            0 0 0 1px rgba(255,255,255,0.05) inset
+          `
+        }}
+      >
+        {/* Dynamic Volumetric Lighting - Follows Cursor */}
+        <motion.div
+          className="absolute inset-0 rounded-[2.5rem] pointer-events-none"
+          style={{
+            background: useMotionTemplate`
+              radial-gradient(
+                circle at ${lightX}% ${lightY}%, 
+                rgba(255,255,255,0.12) 0%, 
+                rgba(255,255,255,0.05) 25%, 
+                transparent 50%
+              )
+            `,
+            opacity: isHovered ? 1 : 0,
+            transition: "opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+            zIndex: 50
+          }}
+        />
+
+        {/* Chromatic Aberration Effect on Hover */}
+        <motion.div
+          className="absolute inset-0 rounded-[2.5rem] pointer-events-none mix-blend-screen opacity-0"
+          animate={{
+            opacity: isHovered ? 0.03 : 0
+          }}
+          transition={{ duration: 0.4 }}
+          style={{
+            background: `linear-gradient(45deg, rgba(255,0,0,0.1) 0%, rgba(0,255,0,0.1) 50%, rgba(0,0,255,0.1) 100%)`,
+            zIndex: 45
+          }}
+        />
+
+        {/* Cinematic Gradient Overlays */}
+        <div className="absolute inset-0 rounded-[2.5rem] pointer-events-none z-10">
+          {/* Top vignette */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-transparent" 
+               style={{ opacity: isHovered ? 0.3 : 0.6, transition: "opacity 0.5s" }} />
+          
+          {/* Bottom gradient */}
+          <motion.div 
+            className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"
+            animate={{ opacity: isHovered ? 0.7 : 0.9 }}
+            transition={{ duration: 0.5 }}
+          />
+          
+          {/* Corner accents */}
+          <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-white/5 to-transparent rounded-tl-[2.5rem]" />
+          <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-white/5 to-transparent rounded-br-[2.5rem]" />
+        </div>
+
+        {/* LAYER 1: Background Image - Deepest Parallax */}
+        <motion.div
+          className="w-full h-full absolute inset-0 rounded-[2.5rem] overflow-hidden"
+          style={{ 
+            transform: useMotionTemplate`translateZ(${backgroundZ}px)`,
+            transformStyle: "preserve-3d"
+          }}
+          animate={{
+            scale: isHovered ? 1.08 : 1,
+            filter: isHovered ? "brightness(0.85) saturate(1.15)" : "brightness(0.65) saturate(0.85)"
+          }}
+          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+        >
+          <img
+            src={hero.image}
+            alt={hero.label}
+            className="w-full h-full object-cover"
+            style={{ transform: "scale(1.05)" }}
+            referrerPolicy="no-referrer"
+          />
+        </motion.div>
+
+        {/* LAYER 2: Cutout Image - Mid Parallax */}
+        <motion.div
+          className="w-full h-full absolute inset-0 opacity-0 pointer-events-none z-20"
+          style={{ 
+            transform: useMotionTemplate`translateZ(${midZ}px)`,
+            transformStyle: "preserve-3d"
+          }}
+          animate={{
+            opacity: isHovered ? 1 : 0,
+            y: isHovered ? -15 : 0,
+            scale: isHovered ? 1.15 : 1
+          }}
+          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+        >
+          <img
+            src={(hero.cutoutImage || hero.image) + '?v=4'}
+            alt={hero.label}
+            className="w-[120%] h-[120%] -ml-[10%] -mt-[10%] object-cover"
+            style={{
+              filter: "drop-shadow(0px 40px 60px rgba(0,0,0,0.8))"
+            }}
+            referrerPolicy="no-referrer"
+          />
+        </motion.div>
+
+        {/* Floating Particles */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          style={{ transform: "translateZ(30px)", zIndex: 25 }}
+          animate={{
+            opacity: isHovered ? 1 : 0
+          }}
+          transition={{ duration: 0.4 }}
+        >
+          {[...Array(8)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-white/40 rounded-full"
+              style={{
+                left: `${20 + i * 10}%`,
+                top: `${20 + (i % 4) * 15}%`
+              }}
+              animate={{
+                y: [0, -20, 0],
+                opacity: [0.2, 0.6, 0.2],
+                scale: [1, 1.5, 1]
+              }}
+              transition={{
+                duration: 2 + i * 0.3,
+                repeat: Infinity,
+                delay: i * 0.2
+              }}
+            />
+          ))}
+        </motion.div>
+
+        {/* LAYER 3: Content - Front Parallax */}
+        <motion.div
+          className="absolute bottom-0 left-0 p-8 z-30 w-full"
+          style={{ 
+            transform: useMotionTemplate`translateZ(${foregroundZ}px)`,
+            transformStyle: "preserve-3d"
+          }}
+          animate={{
+            y: isHovered ? -25 : 0
+          }}
+          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+        >
+          <div className="flex justify-between items-end">
+            <div>
+              {/* Premium Badge */}
+              <motion.div 
+                className="flex gap-2 mb-4"
+                animate={{ x: isHovered ? 5 : 0 }}
+                transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+              >
+                <motion.span 
+                  className="bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-300 text-black text-[10px] font-black uppercase tracking-[0.2em] px-4 py-1.5 rounded-full shadow-lg"
+                  animate={{ 
+                    scale: isHovered ? 1.05 : 1,
+                    boxShadow: isHovered 
+                      ? "0 0 30px rgba(251, 191, 36, 0.4)" 
+                      : "0 4px 15px rgba(0,0,0,0.3)"
+                  }}
+                  transition={{ duration: 0.4 }}
+                >
+                  69 Days
+                </motion.span>
+              </motion.div>
+              
+              {/* Title with glow effect */}
+              <motion.p 
+                className="text-white font-headline font-bold text-2xl sm:text-3xl"
+                style={{
+                  textShadow: isHovered 
+                    ? "0 0 40px rgba(255,255,255,0.3), 0 4px 8px rgba(0,0,0,0.8)"
+                    : "0 4px 8px rgba(0,0,0,0.8)"
+                }}
+                animate={{ x: isHovered ? 8 : 0 }}
+                transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+              >
+                {hero.label}
+              </motion.p>
+            </div>
+
+            {/* Floating Premium Icon */}
+            <motion.div
+              className="w-14 h-14 rounded-2xl bg-gradient-to-br from-white/15 via-white/5 to-transparent border border-white/20 flex items-center justify-center backdrop-blur-sm"
+              style={{ transform: "translateZ(50px)" }}
+              animate={{ 
+                rotate: isHovered ? -15 : 0,
+                scale: isHovered ? 1.1 : 1,
+                boxShadow: isHovered 
+                  ? "0 0 40px rgba(255,255,255,0.2), inset 0 0 20px rgba(255,255,255,0.1)"
+                  : "0 8px 20px rgba(0,0,0,0.3)"
+              }}
+              transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+            >
+              <motion.span 
+                className="text-white text-2xl"
+                animate={{ rotate: isHovered ? 360 : 0 }}
+                transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+              >
+                ✦
+              </motion.span>
+            </motion.div>
+          </div>
+        </motion.div>
+
+        {/* Premium Glowing Border */}
+        <motion.div
+          className="absolute inset-0 rounded-[2.5rem] pointer-events-none"
+          animate={{
+            opacity: isHovered ? 1 : 0,
+            boxShadow: isHovered
+              ? "inset 0 0 40px rgba(255,255,255,0.1), 0 0 60px rgba(109, 73, 110, 0.4), 0 0 100px rgba(109, 73, 110, 0.2)"
+              : "inset 0 0 0 rgba(255,255,255,0)"
+          }}
+          transition={{ duration: 0.5 }}
+          style={{ zIndex: 40 }}
+        />
+
+        {/* Light Sweep Effect */}
+        <motion.div
+          className="absolute inset-0 rounded-[2.5rem] pointer-events-none overflow-hidden"
+          style={{ zIndex: 35 }}
+        >
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+            animate={{
+              x: isHovered ? ["-100%", "200%"] : "-100%"
+            }}
+            transition={{
+              duration: 1.5,
+              ease: "easeInOut",
+              repeat: isHovered ? Infinity : 0,
+              repeatDelay: 0.5
+            }}
+            style={{
+              transform: "skewX(-20deg)"
+            }}
+          />
+        </motion.div>
+
+        {/* Dynamic Ambient Shadow */}
+        <motion.div
+          className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-3/4 h-5 rounded-full pointer-events-none"
+          style={{ 
+            transform: "translateZ(-100px)",
+            background: "radial-gradient(ellipse, rgba(0,0,0,0.5) 0%, transparent 70%)",
+            filter: "blur(18px)"
+          }}
+          animate={{
+            opacity: isHovered ? 0.7 : 0.4,
+            scale: isHovered ? 1.25 : 1,
+            y: isHovered ? -8 : 0
+          }}
+          transition={{ duration: 0.6 }}
+        />
+      </div>
+    </motion.div>
+  );
+}
+

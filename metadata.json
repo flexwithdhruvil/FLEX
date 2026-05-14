@@ -1,0 +1,5 @@
+{
+  "name": "FlexProtocol Auth",
+  "description": "A high-performance authentication system for FlexProtocol.",
+  "requestFramePermissions": []
+}

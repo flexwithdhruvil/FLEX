@@ -1,0 +1,256 @@
+@import "tailwindcss";
+
+@theme {
+  --font-headline: "Lexend", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-primary-container: #FFD700;
+  --color-on-primary-fixed: #221B00;
+  --color-surface-container: #111111;
+  --color-surface-container-low: #0A0A0A;
+  --color-surface-container-lowest: #050505;
+  --color-surface-container-high: #1A1A1A;
+  --color-surface-container-highest: #222222;
+}
+
+@layer utilities {
+  .hero-gradient {
+    background: radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.08) 0%, transparent 70%);
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  @keyframes drift-1 {
+    0% { transform: translate(-10%, -10%) scale(1); }
+    50% { transform: translate(10%, 10%) scale(1.2); }
+    100% { transform: translate(-10%, -10%) scale(1); }
+  }
+
+  @keyframes drift-2 {
+    0% { transform: translate(10%, 10%) scale(1.2); }
+    50% { transform: translate(-10%, -10%) scale(1); }
+    100% { transform: translate(10%, 10%) scale(1.2); }
+  }
+
+  .animate-drift-1 {
+    animation: drift-1 25s ease-in-out infinite;
+  }
+
+  .animate-drift-2 {
+    animation: drift-2 30s ease-in-out infinite;
+  }
+
+  @keyframes glow-pulse {
+    0% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.2); }
+    50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); }
+    100% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.2); }
+  }
+
+  .animate-glow-pulse {
+    animation: glow-pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  .animate-shimmer {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .animate-marquee {
+    animation: marquee 60s linear infinite;
+  }
+
+  .text-reveal-mask {
+    mask-image: linear-gradient(to right, black, black, transparent, transparent);
+    mask-size: 300% 100%;
+    mask-position: 100% 0;
+    transition: mask-position 1s ease-out;
+  }
+
+  .text-reveal-mask:hover {
+    mask-position: 0 0;
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%) rotate(30deg); }
+    100% { transform: translateX(300%) rotate(30deg); }
+  }
+
+  .card-shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 40%, rgba(255,215,0,0.08) 50%, transparent 60%);
+    animation: shimmer 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes neon-pulse {
+    0%, 100% { text-shadow: 0 0 5px rgba(255,215,0,0.2), 0 0 10px rgba(255,215,0,0.1); }
+    50% { text-shadow: 0 0 20px rgba(255,215,0,0.8), 0 0 40px rgba(255,215,0,0.4), 0 0 60px rgba(255,215,0,0.2); }
+  }
+
+  .neon-glow {
+    animation: neon-pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes border-glow {
+    0%, 100% { border-color: rgba(255,215,0,0.2); }
+    50% { border-color: rgba(255,215,0,0.6); }
+  }
+
+  .border-glow-animate {
+    animation: border-glow 3s ease-in-out infinite;
+  }
+}
+
+body, #home {
+  background-color: #050505 !important;
+  background-image: radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(255, 255, 255, 0.05), transparent 25%) !important;
+  background-attachment: fixed !important;
+  color: #ffffff !important;
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+.text-gray-400, .text-gray-500, .secondary-text {
+  color: #a1a1aa !important;
+}
+
+.glass-monolith, .feature-card, .pricing-container {
+  background-color: #111111 !important;
+  border: 1px solid #27272a !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-monolith:hover, .feature-card:hover, .pricing-container:hover {
+  border-color: #3f3f46 !important;
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.8);
+}
+
+h1, h2, h3, h4, .font-headline {
+  font-family: var(--font-headline);
+}
+
+/* ── Auth page: scanning-border animation ──────────────────────────────────── */
+@keyframes scanLine {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}
+
+.input-focused-scan::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent, #facc15, transparent);
+  animation: scanLine 0.6s ease forwards;
+}
+
+/* ── WhatsApp Button ───────────────────────────────────── */
+.whatsapp-btn {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  width: 64px;
+  height: 64px;
+  background: #25d366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+  border: none;
+}
+
+.whatsapp-btn .logo-wrap {
+  width: 34px;
+  height: 34px;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.whatsapp-btn .label-wrap {
+  position: absolute;
+  left: 76px;
+  opacity: 0;
+  transform: translateX(12px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.whatsapp-btn .label-wrap .label-text {
+  font-family: var(--font-headline);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  background: rgba(37, 211, 102, 0.9);
+  padding: 8px 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.35);
+}
+
+.whatsapp-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 30px rgba(37, 211, 102, 0.5);
+  background: #128c7e;
+}
+
+.whatsapp-btn:hover .logo-wrap {
+  transform: scale(1.15);
+}
+
+.whatsapp-btn:hover .label-wrap {
+  opacity: 1;
+  transform: translateX(16px);
+}
+
+.whatsapp-btn:active {
+  transform: scale(0.95);
+}
+
+@keyframes whatsapp-ring {
+  0% { box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
+  50% { box-shadow: 0 4px 25px rgba(37, 211, 102, 0.6); }
+  100% { box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
+}
+
+.whatsapp-btn.pulse {
+  animation: whatsapp-ring 2s ease-in-out infinite;
+}
