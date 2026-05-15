@@ -43,7 +43,7 @@ export default function AnimatedBeamsBackground() {
       canvas.height = window.innerHeight * dpr;
       canvas.style.width  = `${window.innerWidth}px`;
       canvas.style.height = `${window.innerHeight}px`;
-      ctx.scale(dpr, dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       const beams = Array.from({ length: BEAM_COUNT }, (_, i) => generateBeam(i, true));
       drawFrame(ctx, beams);
       return;
@@ -59,7 +59,7 @@ export default function AnimatedBeamsBackground() {
       canvas.height = window.innerHeight * dpr;
       canvas.style.width  = `${window.innerWidth}px`;
       canvas.style.height = `${window.innerHeight}px`;
-      ctx.scale(dpr, dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       beams = Array.from({ length: BEAM_COUNT }, (_, i) => generateBeam(i, true));
     };
 

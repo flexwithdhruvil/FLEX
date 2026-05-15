@@ -1,10 +1,11 @@
 import { useState, FormEvent } from 'react';
+import type * as React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Eye, EyeOff, AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
 import { supabase } from '../utils/supabase';
 
-function Toast({ message, type }: { message: string; type: 'success' | 'error' }) {
+function Toast({ message, type }: { key?: string; message: string; type: 'success' | 'error' }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: -16, scale: 0.96 }}
@@ -51,6 +52,7 @@ export default function Auth() {
   const [username, setUsername] = useState('');
 
   const [focusedField, setFocusedField] = useState<string | null>(null);
+  const appBaseUrl = () => new URL(import.meta.env.BASE_URL, window.location.origin).toString();
 
   const showToast = (message: string, type: 'success' | 'error') => {
     setToast({ message, type });
@@ -60,6 +62,10 @@ export default function Auth() {
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
+    if (!supabase) {
+      showToast('Sign-in is temporarily unavailable. Supabase is not configured for this deployment.', 'error');
+      return;
+    }
     setIsLoading(true);
 
     const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -81,6 +87,10 @@ export default function Auth() {
   const handleSignup = async (e: FormEvent) => {
     e.preventDefault();
     if (!email || !password || !username) return;
+    if (!supabase) {
+      showToast('Sign-up is temporarily unavailable. Supabase is not configured for this deployment.', 'error');
+      return;
+    }
     if (password.length < 6) {
       showToast('Password must be at least 6 characters.', 'error');
       return;
@@ -92,7 +102,7 @@ export default function Auth() {
       password,
       options: {
         data: { username },
-        emailRedirectTo: `${window.location.origin}/`,
+        emailRedirectTo: appBaseUrl(),
       },
     });
 
@@ -106,16 +116,26 @@ export default function Auth() {
   };
 
   const handleGoogleLogin = async () => {
+    if (!supabase) {
+      showToast('Google sign-in is temporarily unavailable. Supabase is not configured for this deployment.', 'error');
+      return;
+    }
+
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/` },
+      options: { redirectTo: appBaseUrl() },
     });
   };
 
   const handleGitHubLogin = async () => {
+    if (!supabase) {
+      showToast('GitHub sign-in is temporarily unavailable. Supabase is not configured for this deployment.', 'error');
+      return;
+    }
+
     await supabase.auth.signInWithOAuth({
       provider: 'github',
-      options: { redirectTo: `${window.location.origin}/` },
+      options: { redirectTo: appBaseUrl() },
     });
   };
 
@@ -310,8 +330,9 @@ export default function Auth() {
                       type="button"
                       onClick={async () => {
                         if (!email) { showToast('Enter your email first.', 'error'); return; }
+                        if (!supabase) { showToast('Password reset is temporarily unavailable. Supabase is not configured for this deployment.', 'error'); return; }
                         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                          redirectTo: `${window.location.origin}/auth`,
+                          redirectTo: new URL('auth', appBaseUrl()).toString(),
                         });
                         if (error) showToast(error.message, 'error');
                         else showToast('Reset link sent! Check your inbox.', 'success');

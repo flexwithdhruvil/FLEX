@@ -6,8 +6,10 @@ import TermsAndConditions from './pages/TermsAndConditions';
 import BeamsDemo from './pages/BeamsDemo';
 
 export default function App() {
+  const basename = import.meta.env.BASE_URL.replace(/\/$/, '');
+
   return (
-    <Router>
+    <Router basename={basename || undefined}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/auth" element={<Auth />} />

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import type * as React from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useInView, useMotionValue, useMotionTemplate } from 'motion/react';
 import {
   Zap,
@@ -33,13 +34,14 @@ import { useAuth } from '../context/AuthContext';
 import MagneticButton from '../components/MagneticButton';
 import AtmosphericFog from '../components/AtmosphericFog';
 import ScrambleText from '../components/ScrambleText';
+import { assetUrl } from '../utils/assets';
 
 const SmartImage = ({ src, alt, className, ...props }: any) => {
   const isLocalBase = src.startsWith('/') && !src.includes('.');
   const extensions = ['.png', '.jpg', '.jpeg', '.webp'];
   const [extIdx, setExtIdx] = useState(0);
 
-  const currentSrc = isLocalBase ? `${src}${extensions[extIdx]}` : src;
+  const currentSrc = assetUrl(isLocalBase ? `${src}${extensions[extIdx]}` : src);
 
   return (
     <img
@@ -323,7 +325,7 @@ export default function Home() {
     );
   };
 
-  const GlowCounter = ({ value, label }: { value: string, label: string }) => {
+  const GlowCounter = ({ value, label }: { key?: number, value: string, label: string }) => {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true });
     const [count, setCount] = useState(0);
@@ -528,7 +530,7 @@ export default function Home() {
             className="absolute inset-x-0 bottom-0 h-[80vh] opacity-5 pointer-events-none"
           >
             <img
-              src="/images/3.png"
+              src={assetUrl('/images/3.png')}
               alt=""
               className="w-full h-full object-cover grayscale"
               referrerPolicy="no-referrer"
@@ -541,7 +543,7 @@ export default function Home() {
           >
             <div className="absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent z-10"></div>
             <img
-              src="/images/3.png"
+              src={assetUrl('/images/3.png')}
               alt=""
               className="w-full h-full object-cover grayscale brightness-[0.5]"
               referrerPolicy="no-referrer"
@@ -554,7 +556,7 @@ export default function Home() {
           >
             <div className="absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent z-10"></div>
             <img
-              src="/images/3.png"
+              src={assetUrl('/images/3.png')}
               alt="Gym Background"
               className="w-full h-full object-cover grayscale brightness-[0.3]"
               referrerPolicy="no-referrer"
@@ -864,9 +866,9 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-8">
             {[
-              { id: 1, image: '/images/1.png', cutoutImage: '/images/cutout_1.png', label: 'Client Transformation' },
-              { id: 2, image: '/images/2.png', cutoutImage: '/images/cutout_2.png', label: 'Client Transformation' },
-              { id: 3, image: '/images/9.png', cutoutImage: '/images/cutout_9.png', label: 'Elite Transformation' }
+              { id: 1, image: assetUrl('/images/1.png'), cutoutImage: assetUrl('/images/cutout_1.png'), label: 'Client Transformation' },
+              { id: 2, image: assetUrl('/images/2.png'), cutoutImage: assetUrl('/images/cutout_2.png'), label: 'Client Transformation' },
+              { id: 3, image: assetUrl('/images/9.png'), cutoutImage: assetUrl('/images/cutout_9.png'), label: 'Elite Transformation' }
             ].map((hero, idx) => (
               <WallOfFameCard key={hero.id} hero={hero} index={idx} />
             ))}

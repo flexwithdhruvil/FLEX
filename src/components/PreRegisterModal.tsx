@@ -46,6 +46,11 @@ export default function PreRegisterModal({ isOpen, onClose, selectedPlan, planPr
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (!supabase) {
+      alert('Registration is temporarily unavailable because Supabase is not configured for this deployment.');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {

@@ -1,7 +1,9 @@
+import { assetUrl } from './utils/assets';
+
 export const NAV_LINKS = [
   { label: 'Programs', href: '#pricing' },
   { label: 'Why Us', href: '#why-us' },
-  { label: 'Results', href: '#results' },
+  { label: 'Results', href: '#transformations' },
   { label: "What you'll learn", href: '#learn' },
 ];
 
@@ -38,17 +40,17 @@ export const RESULTS = [
   {
     title: 'Muscle Gain Mastery',
     subtitle: '69 Days Transformation',
-    image: '/images/1.png',
+    image: assetUrl('/images/1.png'),
   },
   {
     title: 'Muscle Architecture',
     subtitle: 'Vegetarian Power Gains',
-    image: '/images/2.png',
+    image: assetUrl('/images/2.png'),
   },
   {
     title: 'New Transformation',
     subtitle: '69 Days Protocol',
-    image: '/images/3.png',
+    image: assetUrl('/images/3.png'),
   },
 ];
 
@@ -96,15 +98,15 @@ export const PRICING = [
 ];
 
 export const HERO_SLIDES = [
-  { id: 1, image: '/images/1.png', title: 'Muscle Gain Mastery' },
-  { id: 2, image: '/images/2.png', title: 'Body Recomp: 69 Days' },
-  { id: 3, image: '/images/3.png', title: 'Strength Peak: 69 Days' },
-  { id: 4, image: '/images/4.png', title: 'Elite Transformation' },
-  { id: 5, image: '/images/5.PNG', title: 'Shredded Results' },
-  { id: 6, image: '/images/6.JPEG', title: 'The 69-Day Shred' },
-  { id: 7, image: '/images/7.PNG', title: 'Athletic Blueprint' },
-  { id: 8, image: '/images/8.png', title: 'Mass Gain Protocol' },
-  { id: 9, image: '/images/9.png', title: 'Peak Performance' },
+  { id: 1, image: assetUrl('/images/1.png'), title: 'Muscle Gain Mastery' },
+  { id: 2, image: assetUrl('/images/2.png'), title: 'Body Recomp: 69 Days' },
+  { id: 3, image: assetUrl('/images/3.png'), title: 'Strength Peak: 69 Days' },
+  { id: 4, image: assetUrl('/images/4.png'), title: 'Elite Transformation' },
+  { id: 5, image: assetUrl('/images/5.PNG'), title: 'Shredded Results' },
+  { id: 6, image: assetUrl('/images/6.JPEG'), title: 'The 69-Day Shred' },
+  { id: 7, image: assetUrl('/images/7.PNG'), title: 'Athletic Blueprint' },
+  { id: 8, image: assetUrl('/images/8.png'), title: 'Mass Gain Protocol' },
+  { id: 9, image: assetUrl('/images/9.png'), title: 'Peak Performance' },
 ];
 
 export const COHORT_LEARNINGS = [
