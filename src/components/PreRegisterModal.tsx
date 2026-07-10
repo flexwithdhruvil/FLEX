@@ -48,15 +48,6 @@ export default function PreRegisterModal({ isOpen, onClose, selectedPlan, planPr
     e.preventDefault();
     setIsSubmitting(true);
 
-    if (!supabase) {
-      console.warn('Supabase is not configured. Simulating successful registration.');
-      setTimeout(() => {
-        setIsSuccess(true);
-        setIsSubmitting(false);
-      }, 1000);
-      return;
-    }
-
     try {
       const { error } = await supabase
         .from('registrations')
@@ -77,6 +68,17 @@ export default function PreRegisterModal({ isOpen, onClose, selectedPlan, planPr
       }
 
       setIsSuccess(true);
+      setTimeout(() => {
+        let checkoutUrl = "https://tagmango.com/web/checkout/69ccf9409ab2569ef2d049b5"; // Default: Flex Cohort (2999)
+        
+        if (selectedPlan === 'Flex Foundation') {
+          checkoutUrl = "https://tagmango.com/web/checkout/69ccf89f98174ba7307dbce9"; // 999
+        } else if (selectedPlan === 'Inner Circle VIP') {
+          checkoutUrl = "https://tagmango.com/web/checkout/69ccf9b42947ba597ea9a6b5"; // 24999
+        }
+
+        window.location.href = checkoutUrl;
+      }, 1500);
     } catch (err: any) {
       console.error('Submission failed:', err);
       alert(`Failed to submit: ${err.message || JSON.stringify(err)}`);
@@ -93,16 +95,17 @@ export default function PreRegisterModal({ isOpen, onClose, selectedPlan, planPr
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+        transition={{ duration: 0.3 }}
+        className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/70 modal-backdrop modal-backdrop-strong"
       >
         <motion.div
-          initial={{ scale: 0.95, opacity: 0, y: 20 }}
+          initial={{ scale: 0.95, opacity: 0, y: 30 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
-          exit={{ scale: 0.95, opacity: 0, y: 20 }}
-          transition={{ type: "spring", duration: 0.5 }}
-          className="relative w-full max-w-lg bg-surface-container-low border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+          exit={{ scale: 0.95, opacity: 0, y: 30 }}
+          transition={{ duration: 0.52, ease: [0.16, 1, 0.3, 1] }}
+          className="relative w-full max-w-lg bg-surface-container-low border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] modal-panel-ease"
         >
-          <div className="flex items-center justify-between p-6 border-b border-white/5 bg-surface-container">
+          <div className="flex items-center justify-between p-4 sm:p-6 border-b border-white/5 bg-surface-container">
             <div>
               {isVip && (
                 <div className="flex items-center gap-2 mb-1">
@@ -123,7 +126,7 @@ export default function PreRegisterModal({ isOpen, onClose, selectedPlan, planPr
             </button>
           </div>
 
-          <div className="overflow-y-auto p-6 scrollbar-hide">
+          <div className="overflow-y-auto p-4 sm:p-6 scrollbar-hide">
             {isSuccess ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -137,16 +140,15 @@ export default function PreRegisterModal({ isOpen, onClose, selectedPlan, planPr
                   🎉 {isVip ? "Application Received!" : "You're In!"}
                 </h3>
                 <p className="text-gray-400 mb-8 max-w-sm mx-auto">
-                  {isVip
-                    ? "Your VIP application is currently under review. Our team will contact you within 24 hours."
-                    : "Your registration was successful. Our team will contact you shortly with the next steps."}
+                  Redirecting you to the secure checkout page...
                 </p>
-                <button
-                  onClick={onClose}
-                  className="bg-white text-black px-8 py-3 rounded-full font-headline font-bold uppercase text-sm"
-                >
-                  Close
-                </button>
+                <div className="flex justify-center">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
+                    className="w-8 h-8 border-4 border-yellow-400 border-t-transparent rounded-full"
+                  />
+                </div>
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -174,7 +176,7 @@ export default function PreRegisterModal({ isOpen, onClose, selectedPlan, planPr
                       value={formData.fullName}
                       onChange={handleChange}
                       placeholder="Your Name"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-400/30 focus:border-yellow-400/50 transition-all"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-400/40 focus:border-yellow-400/60 focus:bg-white/8 transition-all duration-300 cubic-bezier-motion"
                     />
                   </div>
                   <div className="space-y-1">
@@ -186,7 +188,7 @@ export default function PreRegisterModal({ isOpen, onClose, selectedPlan, planPr
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="+91 9876543210"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-400/30 focus:border-yellow-400/50 transition-all"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-400/40 focus:border-yellow-400/60 focus:bg-white/8 transition-all duration-300 cubic-bezier-motion"
                     />
                   </div>
                 </div>
@@ -200,7 +202,7 @@ export default function PreRegisterModal({ isOpen, onClose, selectedPlan, planPr
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="your@email.com"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-400/30 focus:border-yellow-400/50 transition-all"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-400/40 focus:border-yellow-400/60 focus:bg-white/8 transition-all duration-300 cubic-bezier-motion"
                   />
                 </div>
 
@@ -212,7 +214,7 @@ export default function PreRegisterModal({ isOpen, onClose, selectedPlan, planPr
                       name="goal"
                       value={formData.goal}
                       onChange={handleChange}
-                      className="w-full bg-surface-container-high border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-400/30 focus:border-yellow-400/50 transition-all appearance-none"
+                      className="w-full bg-surface-container-high border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-400/40 focus:border-yellow-400/60 focus:bg-surface-container-high/80 transition-all duration-300 appearance-none cursor-pointer"
                     >
                       <option value="" disabled>Select your goal</option>
                       <option value="Fat Loss">Fat Loss & Leaning</option>
@@ -228,7 +230,7 @@ export default function PreRegisterModal({ isOpen, onClose, selectedPlan, planPr
                       name="experience"
                       value={formData.experience}
                       onChange={handleChange}
-                      className="w-full bg-surface-container-high border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-400/30 focus:border-yellow-400/50 transition-all appearance-none"
+                      className="w-full bg-surface-container-high border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-400/40 focus:border-yellow-400/60 focus:bg-surface-container-high/80 transition-all duration-300 appearance-none cursor-pointer"
                     >
                       <option value="" disabled>Select experience</option>
                       <option value="Beginner">Beginner (0-1 year)</option>
@@ -248,7 +250,7 @@ export default function PreRegisterModal({ isOpen, onClose, selectedPlan, planPr
                       onChange={handleChange}
                       placeholder="Tell us why you deserve to be in the limited VIP inner circle..."
                       rows={2}
-                      className="w-full bg-white/5 border border-yellow-400/20 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-yellow-400 transition-all resize-none"
+                      className="w-full bg-white/5 border border-yellow-400/20 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-yellow-400 focus:bg-white/8 transition-all duration-300 resize-none"
                     />
                   </div>
                 )}
@@ -261,18 +263,31 @@ export default function PreRegisterModal({ isOpen, onClose, selectedPlan, planPr
                     onChange={handleChange}
                     placeholder="Any specific injuries or details we should know?"
                     rows={2}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-400/30 focus:border-yellow-400/50 transition-all resize-none"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-400/40 focus:border-yellow-400/60 focus:bg-white/8 transition-all duration-300 resize-none"
                   />
                 </div>
 
                 <div className="pt-4 flex flex-col gap-3">
-                  <button
+                  <motion.button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black py-4 rounded-xl font-headline font-black uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-70 disabled:active:scale-100 flex items-center justify-center gap-2"
+                    whileHover={{ scale: isSubmitting ? 1 : 1.02, boxShadow: isSubmitting ? 'none' : '0 20px 40px rgba(255, 215, 0, 0.3)' }}
+                    whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black py-4 rounded-xl font-headline font-black uppercase tracking-widest transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
-                    {isSubmitting ? 'Processing...' : isVip ? 'Apply for VIP →' : 'Complete Registration →'}
-                  </button>
+                    {isSubmitting ? (
+                      <>
+                        <motion.span
+                          animate={{ rotate: 360 }}
+                          transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
+                        >
+                          ⚡
+                        </motion.span>
+                        Processing...
+                      </>
+                    ) : isVip ? 'Apply for VIP →' : 'Complete Registration →'}
+                  </motion.button>
                   <div className="flex items-center justify-center gap-1.5 text-[10px] text-gray-400 font-bold uppercase tracking-wider">
                     <ShieldCheck size={12} />
                     Secured by Flex Protocol

@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from 'motion/react';
+import { VIEWPORT, TRANSITION_IN } from '../motionPresets';
 
 interface WallOfFameCardProps {
   key?: React.Key;
@@ -92,13 +93,10 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
       onMouseLeave={handleMouseLeave}
       initial={{ opacity: 0, y: 80, scale: 0.9 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: "-150px" }}
-      transition={{ 
+      viewport={VIEWPORT}
+      transition={{
         delay: index * 0.15,
-        type: "spring",
-        stiffness: 80,
-        damping: 20,
-        mass: 1
+        ...TRANSITION_IN,
       }}
       style={{
         rotateX,
@@ -108,7 +106,7 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
         perspective: 2000,
         willChange: "transform"
       }}
-      className="relative group rounded-[2.5rem] w-full aspect-square cursor-pointer"
+      className="relative group rounded-[2.5rem] w-full aspect-square cursor-pointer wall-fame-idle"
     >
       {}
       <div
@@ -193,6 +191,7 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
             className="w-full h-full object-cover"
             style={{ transform: "scale(1.05)" }}
             referrerPolicy="no-referrer"
+            loading="lazy"
           />
         </motion.div>
 
@@ -218,6 +217,7 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
               filter: "drop-shadow(0px 40px 60px rgba(0,0,0,0.8))"
             }}
             referrerPolicy="no-referrer"
+            loading="lazy"
           />
         </motion.div>
 
@@ -252,80 +252,6 @@ export default function WallOfFameCard({ hero, index }: WallOfFameCardProps) {
           ))}
         </motion.div>
 
-        {}
-        <motion.div
-          className="absolute bottom-0 left-0 p-8 z-30 w-full"
-          style={{ 
-            transform: useMotionTemplate`translateZ(${foregroundZ}px)`,
-            transformStyle: "preserve-3d"
-          }}
-          animate={{
-            y: isHovered ? -25 : 0
-          }}
-          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-        >
-          <div className="flex justify-between items-end">
-            <div>
-              {}
-              <motion.div 
-                className="flex gap-2 mb-4"
-                animate={{ x: isHovered ? 5 : 0 }}
-                transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-              >
-                <motion.span 
-                  className="bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-300 text-black text-[10px] font-black uppercase tracking-[0.2em] px-4 py-1.5 rounded-full shadow-lg"
-                  animate={{ 
-                    scale: isHovered ? 1.05 : 1,
-                    boxShadow: isHovered 
-                      ? "0 0 30px rgba(251, 191, 36, 0.4)" 
-                      : "0 4px 15px rgba(0,0,0,0.3)"
-                  }}
-                  transition={{ duration: 0.4 }}
-                >
-                  69 Days
-                </motion.span>
-              </motion.div>
-              
-              {}
-              <motion.p 
-                className="text-white font-headline font-bold text-2xl sm:text-3xl"
-                style={{
-                  textShadow: isHovered 
-                    ? "0 0 40px rgba(255,255,255,0.3), 0 4px 8px rgba(0,0,0,0.8)"
-                    : "0 4px 8px rgba(0,0,0,0.8)"
-                }}
-                animate={{ x: isHovered ? 8 : 0 }}
-                transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-              >
-                {hero.label}
-              </motion.p>
-            </div>
-
-            {}
-            <motion.div
-              className="w-14 h-14 rounded-2xl bg-gradient-to-br from-white/15 via-white/5 to-transparent border border-white/20 flex items-center justify-center backdrop-blur-sm"
-              style={{ transform: "translateZ(50px)" }}
-              animate={{ 
-                rotate: isHovered ? -15 : 0,
-                scale: isHovered ? 1.1 : 1,
-                boxShadow: isHovered 
-                  ? "0 0 40px rgba(255,255,255,0.2), inset 0 0 20px rgba(255,255,255,0.1)"
-                  : "0 8px 20px rgba(0,0,0,0.3)"
-              }}
-              transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-            >
-              <motion.span 
-                className="text-white text-2xl"
-                animate={{ rotate: isHovered ? 360 : 0 }}
-                transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-              >
-                ✦
-              </motion.span>
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {}
         <motion.div
           className="absolute inset-0 rounded-[2.5rem] pointer-events-none"
           animate={{

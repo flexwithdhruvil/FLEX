@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react';
-import type * as React from 'react';
 import { motion } from 'motion/react';
 
 interface MagneticButtonProps {

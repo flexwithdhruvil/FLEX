@@ -28,12 +28,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    supabase.auth.getSession().then(({ data }) => {
+    supabase.auth.getSession().then(({ data }: any) => {
       setSession(data.session);
       setIsLoading(false);
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: any, newSession: Session | null) => {
       setSession(newSession);
     });
 
@@ -41,11 +41,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signOut = async () => {
-    if (!supabase) {
-      setSession(null);
-      return;
-    }
-
+    if (!supabase) return;
     await supabase.auth.signOut();
     setSession(null);
   };
@@ -66,3 +62,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 }
 
 export const useAuth = () => useContext(AuthContext);
+

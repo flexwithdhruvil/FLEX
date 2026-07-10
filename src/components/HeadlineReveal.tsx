@@ -51,7 +51,7 @@ export default function HeadlineReveal() {
             clipPath: { duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] },
             textShadow: { duration: 0.8, delay: 1.35, ease: "easeOut" }
           }}
-          className="text-white inline-block relative"
+          className="text-white inline-block relative headline-gradient-shift"
         >
           Flex Protocol
         </motion.span>

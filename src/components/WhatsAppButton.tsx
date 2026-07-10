@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 
 export default function WhatsAppButton() {
   const [isHovered, setIsHovered] = useState(false);
-  const phoneNumber = "918849679398";
+  const phoneNumber = "8200012647";
   const whatsappUrl = `https://wa.me/${phoneNumber}`;
 
   return (
@@ -29,7 +29,7 @@ export default function WhatsAppButton() {
           animate={{ width: isHovered ? 'auto' : 0, opacity: isHovered ? 1 : 0 }}
           className="overflow-hidden whitespace-nowrap"
         >
-          <span className="font-headline font-bold pr-2 tracking-wider">+91 884 967 9398</span>
+          <span className="font-headline font-bold pr-2 tracking-wider">8200012647</span>
         </motion.div>
       </a>
     </div>

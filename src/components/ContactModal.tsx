@@ -33,14 +33,16 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            transition={{ duration: 0.3 }}
+            className="absolute inset-0 bg-black/80 modal-backdrop modal-backdrop-strong"
           />
           
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="relative w-full max-w-lg bg-surface-container border border-white/10 rounded-3xl p-8 shadow-2xl overflow-hidden"
+            exit={{ opacity: 0, scale: 0.95, y: 30 }}
+            transition={{ duration: 0.52, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-full max-w-lg bg-surface-container border border-white/10 rounded-3xl p-8 shadow-2xl overflow-hidden modal-panel-ease"
           >
             <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-400/5 blur-[80px] rounded-full -mr-32 -mt-32" />
             

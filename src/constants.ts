@@ -1,4 +1,4 @@
-import { assetUrl } from './utils/assets';
+import { publicUrl } from './utils/publicUrl';
 
 export const NAV_LINKS = [
   { label: 'Programs', href: '#pricing' },
@@ -40,17 +40,17 @@ export const RESULTS = [
   {
     title: 'Muscle Gain Mastery',
     subtitle: '69 Days Transformation',
-    image: assetUrl('/images/1.png'),
+    image: publicUrl('/images/1.png'),
   },
   {
     title: 'Muscle Architecture',
     subtitle: 'Vegetarian Power Gains',
-    image: assetUrl('/images/2.png'),
+    image: publicUrl('/images/2.png'),
   },
   {
     title: 'New Transformation',
     subtitle: '69 Days Protocol',
-    image: assetUrl('/images/3.png'),
+    image: publicUrl('/images/3.png'),
   },
 ];
 
@@ -61,7 +61,7 @@ export const PRICING = [
     price: '₹999',
     period: '/one-time',
     features: [
-      '69-Day Training PDF',
+      '69-Day Training Guide',
       'Vegetarian Nutrition Guide',
       'Exercise Video Library',
     ],
@@ -98,15 +98,11 @@ export const PRICING = [
 ];
 
 export const HERO_SLIDES = [
-  { id: 1, image: assetUrl('/images/1.png'), title: 'Muscle Gain Mastery' },
-  { id: 2, image: assetUrl('/images/2.png'), title: 'Body Recomp: 69 Days' },
-  { id: 3, image: assetUrl('/images/3.png'), title: 'Strength Peak: 69 Days' },
-  { id: 4, image: assetUrl('/images/4.png'), title: 'Elite Transformation' },
-  { id: 5, image: assetUrl('/images/5.PNG'), title: 'Shredded Results' },
-  { id: 6, image: assetUrl('/images/6.JPEG'), title: 'The 69-Day Shred' },
-  { id: 7, image: assetUrl('/images/7.PNG'), title: 'Athletic Blueprint' },
-  { id: 8, image: assetUrl('/images/8.png'), title: 'Mass Gain Protocol' },
-  { id: 9, image: assetUrl('/images/9.png'), title: 'Peak Performance' },
+  { id: 1, image: publicUrl('/images/1.png'), title: 'Muscle Gain Mastery' },
+  { id: 2, image: publicUrl('/images/2.png'), title: 'Body Recomp: 69 Days' },
+  { id: 4, image: publicUrl('/images/4.png'), title: 'Elite Transformation' },
+  { id: 8, image: publicUrl('/images/8.png'), title: 'Mass Gain Protocol' },
+  { id: 9, image: publicUrl('/images/9.png'), title: 'Peak Performance' },
 ];
 
 export const COHORT_LEARNINGS = [

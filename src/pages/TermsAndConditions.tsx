@@ -13,29 +13,29 @@ const TermsAndConditions = () => {
   return (
     <div className="min-h-screen bg-surface-container-lowest text-white font-body selection:bg-primary-container selection:text-on-primary-fixed overflow-x-hidden">
       <nav className="fixed top-0 w-full z-50 bg-surface-container-lowest/60 backdrop-blur-xl border-b border-white/5">
-        <div className="max-w-[1200px] mx-auto flex justify-between items-center px-8 py-4">
-          <Link to="/" className="text-2xl font-black italic text-yellow-400 font-headline flex items-center gap-2">
+        <div className="max-w-[1200px] mx-auto flex justify-between items-center px-4 sm:px-8 py-4">
+          <Link to="/" className="text-lg sm:text-2xl font-black italic text-yellow-400 font-headline flex items-center gap-2">
             <ArrowLeft size={20} />
             FlexWithDhruvil
           </Link>
         </div>
       </nav>
 
-      <main className="pt-32 pb-20 px-8">
+      <main className="pt-24 sm:pt-32 pb-16 sm:pb-20 px-4 sm:px-8">
         <div className="max-w-[800px] mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="mb-16"
           >
-            <h1 className="text-4xl md:text-6xl font-headline font-black mb-6 tracking-tight uppercase">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-headline font-black mb-4 sm:mb-6 tracking-tight uppercase">
               TERMS <span className="text-yellow-400">&</span> CONDITIONS
             </h1>
             <p className="text-gray-400 text-lg font-body">Last Updated: March 2026</p>
           </motion.div>
 
           <div className="space-y-16">
-            <section className="glass-monolith p-8 rounded-2xl border border-white/10">
+            <section className="glass-monolith p-5 sm:p-8 rounded-2xl border border-white/10">
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-12 h-12 rounded-full bg-yellow-400/10 flex items-center justify-center text-yellow-400">
                   <Users size={24} />
@@ -63,7 +63,7 @@ const TermsAndConditions = () => {
               </div>
             </section>
 
-            <section className="glass-monolith p-8 rounded-2xl border border-white/10">
+            <section className="glass-monolith p-5 sm:p-8 rounded-2xl border border-white/10">
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-12 h-12 rounded-full bg-yellow-400/10 flex items-center justify-center text-yellow-400">
                   <ShieldAlert size={24} />
@@ -85,7 +85,7 @@ const TermsAndConditions = () => {
               </div>
             </section>
 
-            <section className="glass-monolith p-8 rounded-2xl border border-white/10">
+            <section className="glass-monolith p-5 sm:p-8 rounded-2xl border border-white/10">
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-12 h-12 rounded-full bg-yellow-400/10 flex items-center justify-center text-yellow-400">
                   <Scale size={24} />
@@ -105,7 +105,7 @@ const TermsAndConditions = () => {
               </div>
             </section>
 
-            <section className="glass-monolith p-8 rounded-2xl border border-white/10">
+            <section className="glass-monolith p-5 sm:p-8 rounded-2xl border border-white/10">
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-12 h-12 rounded-full bg-yellow-400/10 flex items-center justify-center text-yellow-400">
                   <CreditCard size={24} />
@@ -125,7 +125,7 @@ const TermsAndConditions = () => {
               </div>
             </section>
 
-            <section className="glass-monolith p-8 rounded-2xl border border-white/10">
+            <section className="glass-monolith p-5 sm:p-8 rounded-2xl border border-white/10">
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-12 h-12 rounded-full bg-yellow-400/10 flex items-center justify-center text-yellow-400">
                   <Activity size={24} />
@@ -162,12 +162,14 @@ const TermsAndConditions = () => {
         <div className="flex justify-center gap-8 mb-4">
           <Link to="/privacy-policy" className="text-xs text-gray-500 hover:text-yellow-400 transition-colors uppercase font-bold tracking-widest">Privacy Policy</Link>
           <Link to="/terms-and-conditions" className="text-xs text-gray-500 hover:text-yellow-400 transition-colors uppercase font-bold tracking-widest">Terms & Conditions</Link>
-          <button 
-            onClick={() => setIsContactOpen(true)}
+          <a
+            href="https://wa.me/8200012647"
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-xs text-gray-500 hover:text-yellow-400 transition-colors uppercase font-bold tracking-widest"
           >
             Contact
-          </button>
+          </a>
         </div>
         <div className="flex justify-center gap-6 mb-6">
           <a 
